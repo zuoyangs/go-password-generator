@@ -10,24 +10,25 @@ const length = document.getElementById("length"); // 密码长度输入框
 const quantity = document.getElementById("quantity"); // 生成数量输入框
 const generateBtn = document.getElementById("generate-button"); // 生成按钮
 
+const getOptions = () => {
+    // 获取所选选项
+    return {
+        lowercase: lowercase.checked,
+        uppercase: uppercase.checked,
+        numbers: numbers.checked,
+        special: special.checked,
+        customSpecial: customSpecial.value,
+        exclude: exclude.checked,
+        customExclude: customExclude.value,
+        length: length.value,
+        quantity: quantity.value,
+    };
+};
+
 if (generateBtn) {
     // 为生成按钮添加事件监听器
     generateBtn.addEventListener("click", () => {
-        // 获取所选选项
-        const options = {
-            lowercase: lowercase.checked, // 是否包含小写字母
-            uppercase: uppercase.checked, // 是否包含大写字母
-            numbers: numbers.checked, // 是否包含数字
-            special: special.checked, // 是否包含特殊字符
-            customSpecial: customSpecial.value, // 自定义字符
-            exclude: exclude.checked, // 是否排除字符
-            customExclude: customExclude.value, // 自定义排除字符
-            length: length.value, // 密码长度
-            quantity: quantity.value, // 生成数量
-        };
-
-        console.log(options);
-        console.log("按钮被点击了！");
+        const options = getOptions();
 
         // 向服务器发送带有所选选项的POST请求
         fetch("/generate", {
@@ -39,15 +40,12 @@ if (generateBtn) {
             })
 
             .then((response) => response.json())
+            .then(data => console.log(data))
             .then((data) => {
                 // 显示生成的密码
                 const passwords = data.passwords;
-                const passwordList = document.getElementById("password-list");
-                passwordList.innerHTML = "";
                 passwords.forEach((password) => {
-                    const li = document.createElement("li");
-                    li.textContent = password;
-                    passwordList.appendChild(li);
+                    console.log(password);
                 });
             })
             .catch((error) => console.error(error));
