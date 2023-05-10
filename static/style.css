@@ -13,6 +13,25 @@ body {
 
 }
 
+.passwordsTable {
+    border: 1px solid black;
+}
+
+#passwords-container {
+    display: flex;
+    justify-content: center;
+}
+
+#passwords-container table {
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#passwords-container td {
+    border: 1px solid black;
+    padding: 5px;
+}
+
 span {
     display: inline-flex;
     align-items: center;

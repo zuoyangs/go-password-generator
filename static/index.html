@@ -263,9 +263,20 @@
             </tr>
         </table>
         <button type="button" id="generate-button">生成密码</button>
-        <div id="passwords-container"></div>
+        <div class="table-container">
+            <table id="passwordsTable" border="1">
+                <thead bgcolor="#F5F5F5">
+                    <tr>
+                        <th width="25%" bgcolor="#F5F5F5">序号</th>
+                        <th width="75%" bgcolor="#FFFFFF">密码</th>
+                    </tr>
+                </thead>
+                <tbody gcolor="#FFFFFF">
+                    <!-- 生成的随机密码将会插入到这里 -->
+                </tbody>
+            </table>
+        </div>
         <script src="script.js"></script>
-
     </body>
 
 </html>

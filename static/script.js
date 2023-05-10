@@ -7,23 +7,23 @@ const exclude = document.getElementById("exclude");
 const customExclude = document.getElementById("custom-exclude");
 const length = document.getElementById("length");
 const quantity = document.getElementById("quantity");
-const passwordsContainer = document.getElementById("passwords-container");
+const passwordsTable = document.getElementById("passwordsTable");
 
 const getOptions = () => {
     return {
-        "lowercase": true,
-        "uppercase": true,
-        "numbers": true,
-        "special": false,
-        "customSpecial": "",
-        "exclude": false,
-        "customExclude": "",
-        "length": 8,
-        "quantity": 2
+        "lowercase": lowercase.checked,
+        "uppercase": uppercase.checked,
+        "numbers": numbers.checked,
+        "special": special.checked,
+        "customSpecial": customSpecial.value,
+        "exclude": exclude.checked,
+        "customExclude": customExclude.value,
+        "length": parseInt(length.value),
+        "quantity": parseInt(quantity.value),
     }
 };
 
-window.onload = function () {
+window.onload = function() {
     const generateBtn = document.getElementById("generate-button");
 
     generateBtn.addEventListener("click", async () => {
@@ -43,14 +43,22 @@ window.onload = function () {
             const result = await response.json();
 
             // Clear previous passwords
-            passwordsContainer.innerHTML = "";
+            passwordsTable.querySelector("tbody").innerHTML = "";
 
             // Generate new passwords
-            result.passwords.forEach((password) => {
-                const passwordElement = document.createElement("p");
-                passwordElement.innerText = password;
-                passwordsContainer.appendChild(passwordElement);
-                passwordsContainer.appendChild(document.createElement('br'));
+            result.passwords.forEach((password, index) => {
+                const row = document.createElement("tr");
+
+                const indexCell = document.createElement("td");
+                indexCell.innerText = index + 1;
+
+                const passwordCell = document.createElement("td");
+                passwordCell.innerText = password;
+
+                row.appendChild(indexCell);
+                row.appendChild(passwordCell);
+
+                passwordsTable.querySelector("tbody").appendChild(row);
             });
         } catch (error) {
             console.log("error", error);
