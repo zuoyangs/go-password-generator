@@ -27,10 +27,6 @@ h1.title {
     /* 设置标题居中 */
 }
 
-td[name="center_td"] {
-    text-align: center;
-}
-
 table {
     border-collapse: collapse;
     /* 设置表格边框合并 */

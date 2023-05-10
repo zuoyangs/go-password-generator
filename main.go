@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -10,13 +10,14 @@ import (
 )
 
 func main() {
+
 	// 设置HTTP路由
 	router := gin.Default()
-	router.POST("/", passwordGenerator)
+	router.POST("/passwordGenerator", passwordGenerator)
 	router.Static("/", "./static")
 	err := router.Run(":3005")
 	if err != nil {
-		fmt.Println("error starting the server:", err)
+		log.Fatalln("启动服务器时出错：", err)
 		return
 	}
 }
@@ -24,7 +25,7 @@ func main() {
 type RequestBody struct {
 	Lowercase     bool   `json:"lowercase"`
 	Uppercase     bool   `json:"uppercase"`
-	Numbers       bool   `json:"number"`
+	Numbers       bool   `json:"numbers"`
 	Special       bool   `json:"special"`
 	CustomSpecial string `json:"customSpecial"`
 	Exclude       bool   `json:"exclude"`
@@ -40,10 +41,14 @@ type ResponseBody struct {
 func passwordGenerator(c *gin.Context) {
 
 	var body RequestBody
+
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	log.Printf("[INFO] 接到请求: %+v\n", body)
+
 	// 生成密码
 	passwords := []string{}
 	for i := 0; i < body.Quantity; i++ {
@@ -85,6 +90,6 @@ func passwordGenerator(c *gin.Context) {
 		}
 		passwords = append(passwords, password)
 	}
+	// JSON 响应
 	c.JSON(http.StatusOK, ResponseBody{Passwords: passwords})
-
 }
