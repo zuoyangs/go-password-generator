@@ -1,21 +1,36 @@
-FROM golang:1.21.5-alpine3.18
-
+FROM golang:1.21.5-alpine3.18 AS builder  
+  
 ENV GO111MODULE=on \
     GOPROXY=https://goproxy.cn,direct \
-    GIN_MODE=release 
+    GIN_MODE=release
 
-RUN apk add --no-cache git
-RUN adduser -D appuser
+RUN sed -i 's#dl-cdn.alpinelinux.org#mirrors.aliyun.com#g' /etc/apk/repositories \
+  && apk add --no-cache git \
+  && adduser -D appuser
 
-WORKDIR /home/appuse
+WORKDIR /home/appuser
 
-COPY . .
+COPY . /home/appuser/
 
 RUN go mod init go-password-generator \
   && go mod tidy \
-  && go build -o go-password-generator \
-  && chown appuser:appuser go-password-generator
+  && go build -o go-password-generator main.go
 
-EXPOSE 3005
 
+FROM golang:1.21.5-alpine3.18
+
+RUN adduser -D appuser \
+  && mkdir -pv /home/appuser/static
+
+WORKDIR /home/appuser
+
+COPY static /home/appuser/static/
+COPY --from=builder /home/appuser/go-password-generator .  
+
+RUN chown -R appuser:appuser /home/appuser
+
+EXPOSE 3005  
+  
+USER appuser
+  
 ENTRYPOINT ["./go-password-generator"]

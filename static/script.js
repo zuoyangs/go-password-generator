@@ -30,7 +30,7 @@ window.onload = function() {
         const options = getOptions();
 
         try {
-            const response = await fetch("http://localhost:3005/passwordGenerator", {
+            const response = await fetch("https://password.zuoyang.tech/passwordGenerator", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
