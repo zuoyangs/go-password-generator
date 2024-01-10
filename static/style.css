@@ -143,3 +143,22 @@ button {
     margin-right: 10px;
     /* 添加右边距 */
 }
+
+ /* CSS样式用于固定底部信息 */
+ .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    background-color: #f8f9fa; /* 可选：为底部信息添加背景色 */
+    padding: 5px 0; /* 可选：为底部信息添加内边距 */
+}
+.footer img {
+    vertical-align: middle; /* 让图片与文字垂直居中 */
+}
+.footer a {
+    color: #007bff; /* 可选：为链接设置颜色 */
+    text-decoration: none; /* 移除链接下划线 */
+}
