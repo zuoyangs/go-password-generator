@@ -1,5 +1,5 @@
-FROM golang:1.21.5-alpine3.18 AS builder  
-  
+FROM registry.cn-hangzhou.aliyuncs.com/mw5uk4snmsc/go:1.21.5-alpine3.19 as builder
+
 ENV GO111MODULE=on \
     GOPROXY=https://goproxy.cn,direct \
     GIN_MODE=release
@@ -17,7 +17,7 @@ RUN go mod init go-password-generator \
   && go build -o go-password-generator main.go
 
 
-FROM golang:1.21.5-alpine3.18
+FROM registry.cn-hangzhou.aliyuncs.com/mw5uk4snmsc/go:1.21.5-alpine3.19
 
 RUN adduser -D appuser \
   && mkdir -pv /home/appuser/static
@@ -25,12 +25,12 @@ RUN adduser -D appuser \
 WORKDIR /home/appuser
 
 COPY static /home/appuser/static/
-COPY --from=builder /home/appuser/go-password-generator .  
+COPY --from=builder /home/appuser/go-password-generator .
 
 RUN chown -R appuser:appuser /home/appuser
 
-EXPOSE 3005  
-  
+EXPOSE 3005
+
 USER appuser
-  
+
 ENTRYPOINT ["./go-password-generator"]
