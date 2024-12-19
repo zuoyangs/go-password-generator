@@ -1,4 +1,3 @@
-go 实现的在线随机密码生成器
 
 https://password.zuoyang.tech
 
